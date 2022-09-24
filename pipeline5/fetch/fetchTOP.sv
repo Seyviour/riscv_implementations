@@ -8,12 +8,15 @@ module FetchTop #(
     input logic clk, reset, 
     input logic stallF_N, PCSrcE,
     input logic [counter_width-1: 0] PCTargetE,
-    output logic [word_width-1: 0] instr
+    output logic [word_width-1: 0] instrF,
+    output logic [counter_width -1: 0] PCF,
+    output logic [counter_width -1: 0] PCPlus4F
 );
 
 logic stallF; 
 logic [counter_width-1: 0] addressF; 
-assign stallF = ~stallF_N; 
+assign stallF = ~stallF_N;
+
 
 progCounter #(.reset_state(0), .counter_width(counter_width) ) thisProgCounter(
     .clk(clk),
@@ -21,15 +24,16 @@ progCounter #(.reset_state(0), .counter_width(counter_width) ) thisProgCounter(
     .load(PCSrcE),
     .load_val(PCTargetE),
     .enable(stallF),
-    .counter_state(addressF)
+    .state(PCF),
+    .next_state(PCPlus4F)
     );
 
 memory #(.word_width(word_width), .address_width(32), .no_words(64)) ProgramMemory
     (
         .clk(clk),
         .we(0), 
-        .addr(addressF),
-        .rd_data(instr)
+        .addr(PCF),
+        .rd_data(instrF)
     );
 
 
