@@ -7,19 +7,17 @@ module Split (
     output logic [14: 12] i_14_12,
     output logic i_30,
     output logic [11: 7] i_11_7,
-    output logic [31: 7] i_31_7,
-
+    output logic [31: 7] i_31_7
 );
     
 
 
-always_comb begin
-    i_24_20 = instr[24:20];
-    i_19_15 = instr[19:15];
-    i_6_0 = instr[6: 0];
-    i_14_12 = instr[14: 12];
-    i_30 = instr[30];
-    i_11_7 = instr[11: 7];
-    i_31_7 = instr[31: 7]; 
-end
+assign i_24_20 = instr[24:20];
+assign i_19_15 = instr[19:15];
+assign i_6_0 = instr[6: 0];
+assign i_14_12 = instr[14: 12];
+assign i_30 = instr[30];
+assign i_11_7 = instr[11: 7];
+assign i_31_7 = instr[31: 7]; 
+
 endmodule

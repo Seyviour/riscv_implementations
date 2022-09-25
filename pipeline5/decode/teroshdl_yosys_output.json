@@ -1,0 +1,196 @@
+{
+  "creator": "Yosys 0.9 (git sha1 1979e0b)",
+  "modules": {
+    "extend": {
+      "attributes": {
+        "cells_not_processed": 1,
+        "src": "extend.sv:3"
+      },
+      "ports": {
+        "instr": {
+          "direction": "input",
+          "offset": 7,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ]
+        },
+        "immsrc": {
+          "direction": "input",
+          "bits": [ 27, 28 ]
+        },
+        "immext": {
+          "direction": "output",
+          "bits": [ 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
+        }
+      },
+      "cells": {
+        "$procmux$2": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": 4,
+            "WIDTH": 32
+          },
+          "attributes": {
+            "full_case": 1,
+            "src": "extend.sv:22|extend.sv:14"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x" ],
+            "B": [ "0", 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 15, 7, 8, 9, 10, 11, 12, 13, 14, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, "0", 3, 4, 5, 6, 20, 21, 22, 23, 24, 25, 2, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 2, 3, 4, 5, 6, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26 ],
+            "S": [ 61, 62, 63, 64 ],
+            "Y": [ 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
+          }
+        },
+        "$procmux$3_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": 0,
+            "A_WIDTH": 2,
+            "B_SIGNED": 0,
+            "B_WIDTH": 2,
+            "Y_WIDTH": 1
+          },
+          "attributes": {
+            "full_case": 1,
+            "src": "extend.sv:22|extend.sv:14"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28 ],
+            "B": [ "1", "1" ],
+            "Y": [ 61 ]
+          }
+        },
+        "$procmux$4_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": 0,
+            "A_WIDTH": 2,
+            "B_SIGNED": 0,
+            "B_WIDTH": 2,
+            "Y_WIDTH": 1
+          },
+          "attributes": {
+            "full_case": 1,
+            "src": "extend.sv:20|extend.sv:14"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28 ],
+            "B": [ "0", "1" ],
+            "Y": [ 62 ]
+          }
+        },
+        "$procmux$5_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": 0,
+            "A_WIDTH": 2,
+            "B_SIGNED": 0,
+            "B_WIDTH": 2,
+            "Y_WIDTH": 1
+          },
+          "attributes": {
+            "full_case": 1,
+            "src": "extend.sv:18|extend.sv:14"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28 ],
+            "B": [ "1", "0" ],
+            "Y": [ 63 ]
+          }
+        },
+        "$procmux$6_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": 0,
+            "A_WIDTH": 2,
+            "Y_WIDTH": 1
+          },
+          "attributes": {
+            "full_case": 1,
+            "src": "extend.sv:16|extend.sv:14"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28 ],
+            "Y": [ 64 ]
+          }
+        }
+      },
+      "netnames": {
+        "$procmux$3_CMP": {
+          "hide_name": 1,
+          "bits": [ 61 ],
+          "attributes": {
+          }
+        },
+        "$procmux$4_CMP": {
+          "hide_name": 1,
+          "bits": [ 62 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5_CMP": {
+          "hide_name": 1,
+          "bits": [ 63 ],
+          "attributes": {
+          }
+        },
+        "$procmux$6_CMP": {
+          "hide_name": 1,
+          "bits": [ 64 ],
+          "attributes": {
+          }
+        },
+        "immext": {
+          "hide_name": 0,
+          "bits": [ 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ],
+          "attributes": {
+            "src": "extend.sv:5"
+          }
+        },
+        "immsrc": {
+          "hide_name": 0,
+          "bits": [ 27, 28 ],
+          "attributes": {
+            "src": "extend.sv:4"
+          }
+        },
+        "instr": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
+          "offset": 7,
+          "attributes": {
+            "src": "extend.sv:3"
+          }
+        }
+      }
+    }
+  }
+}
