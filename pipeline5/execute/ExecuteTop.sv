@@ -1,0 +1,122 @@
+`include "/home/saviour/study/riscv/pipeline5/execute/ExecuteState.sv"
+`include "/home/saviour/study/riscv/pipeline5/execute/Resolve.sv"
+`include "/home/saviour/study/riscv/pipeline5/execute/ALU.sv"
+`include "/home/saviour/study/riscv/pipeline5/generic/adder.sv"
+
+
+module ExecuteTop #(
+    parameter
+    word_width = 32
+) (
+    input logic clk, FlushE,
+    input logic RegWriteD,
+    input logic [1:0] ResultSrcD,
+    input logic [1:0] MemWriteD, 
+    input logic JumpD,
+    input logic BranchD, 
+    input logic [2:0] ALUControlD,
+    input logic ALUSrcD,
+    input logic [word_width-1: 0] RD1, RD2, ImmExtD,
+    input logic [4: 0] Rs1D, Rs2D, RdD,
+    input logic [word_width-1: 0] PCD, PCPlus4D,
+
+
+    input [word_width-1: 0] ALUResultM,
+    input forwardAE, forwardBE,
+    input [word_width-1: 0] ResultW,
+
+
+    output logic RegWriteE,
+    output logic [1:0] ResultSrcE,
+    output logic [1:0] MemWriteE, 
+    output logic JumpE,
+    output logic BranchE, 
+    output logic [2:0] ALUControlE,
+    output logic [4: 0] Rs1E, Rs2E, RdE,
+    output logic [word_width-1: 0] PCE,
+
+    output logic [word_width-1: 0] PCTargetE,
+    output logic [word_width-1: 0] PCPlus4E,
+    output logic [word_width-1: 0] ALUResultE,
+    output logic zeroE
+
+);
+
+logic [word_width-1: 0] RD1E, RD2E, ImmExtE;
+logic ALUSrcE;
+
+
+
+
+ExecuteState #(.word_width(32)) thisExecuteState
+    (
+        .clk(clk),
+        .FlushE(FlushE),
+        .RegWriteD(RegWriteD), 
+        .ResultSrcD(ResultSrcD), 
+        .MemWriteD(MemWriteD),
+        .JumpD(JumpD),
+        .BranchD(BranchD),
+        .ALUControlD(ALUControlD),
+        .ALUSrcD(ALUSrcD),
+        .RD1(RD1),
+        .RD2(RD2),
+        .ImmExtD(ImmExtD),
+        .Rs1D(Rs1D),
+        .Rs2D(Rs2D),
+        .RdD(RdD),
+        .PCD(PCD),
+        .PCPlus4D(PCPlus4D),
+
+        .RegWriteE(RegWriteE),
+        .ResultSrcE(ResultSrcE), 
+        .MemWriteE(MemWriteE),
+        .JumpE(JumpE),
+        .BranchE(BranchE),
+        .ALUControlE(ALUControlE),
+        .ALUSrcE(ALUSrcE),
+        .RD1E(RD1E),
+        .RD2E(RD2E),
+        .ImmExtE(ImmExtE),
+        .Rs1E(Rs1E),
+        .Rs2E(Rs2E),
+        .RdE(RdE),
+        .PCE(PCE),
+        .PCPlus4E(PCPlus4E)
+    );
+
+logic [word_width-1: 0] SrcAE, SrcBE, WriteDataE; 
+
+Resolve #(.word_width(32)) thisResolver
+    (
+        .RD1E(RD1E),
+        .RD2E(RD2E),
+        .ImmExtE(ImmExtE),
+        .ALUResultM(ALUResultM),
+        .forwardAE(forwardAE),
+        .forwardBE(forwardBE),
+        .ALUSrcE(ALUSrcE),
+        .ResultW(ResultW),
+        .WriteDataE(WriteDataE),
+        .SrcAE(SrcAE),
+        .SrcBE(SrcBE)
+    );
+
+ALU #(.word_width(32)) thisALU
+    (
+        .ALUControl(ALUControlE),
+        .SrcA(SrcAE),
+        .SrcB(SrcBE),
+        .Result(ALUResultE), 
+        .zero(zeroE)
+    );
+
+adder #(.word_width(32)) thisPCAdder
+    (
+        .A(PCE),
+        .B(ImmExtE),
+        .C(PCTargetE)
+    );
+
+
+endmodule
