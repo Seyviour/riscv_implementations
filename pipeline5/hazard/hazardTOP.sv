@@ -39,6 +39,9 @@ always_comb
         forwardBE = 2'b00;
 
 always_comb begin
+    // stall when result source is memory and source register (execute) is the destination register (decode)
+    // only need to check for execute because in any other case, the result can be forwarded or is available in the RegisterFile
+
     lwStall = ResultSrcE[0] & ((Rs1D == RdE) | (Rs2D == RdE));
     StallF = lwStall;
     StallD = lwStall;
