@@ -14,6 +14,10 @@ module decodeTOP #(
     input logic [word_width-1: 0] instrF,
     input logic [word_width-1: 0] PCF,
     input logic  [word_width-1: 0] PCPlus4F,
+
+    input logic FlushD,
+    input logic StallD, 
+
     output logic [19: 15] rd_A1_RF,
     output logic [24: 20] rd_A2_RF,
     output logic [31: 0] ImmExtD,
@@ -27,10 +31,12 @@ module decodeTOP #(
     output logic JumpD,
     output logic BranchD,
     output logic [2:0] ALUControlD,
-    output logic ALUSrcD
+    output logic ALUSrcD,
+    output logic [word_width-1: 0] PCPlus4D,
+    output logic [word_width-1: 0] PCD
 );
 
-logic [word_width-1: 0] instrD, PCD, PCPlus4D; 
+logic [word_width-1: 0] instrD; 
 decodeState #(.word_width(32)) thisDecodeState
     (
         //input
@@ -38,6 +44,8 @@ decodeState #(.word_width(32)) thisDecodeState
         .instrF(instrF),
         .PCF(PCF),
         .PCPlus4F(PCPlus4F),
+        .reset(FlushD),
+        .enable(~StallD),
 
         //output
         .instrD(instrD),
