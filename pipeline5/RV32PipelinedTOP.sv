@@ -27,8 +27,8 @@ decodeTOP #(.word_width (word_width)) thisDecodeStage
       .instrF (instrF ),
       .PCF (PCF ),
       .PCPlus4F (PCPlus4F ),
-      .rd_A1_RF (rd_A1_RF ),
-      .rd_A2_RF (rd_A2_RF ),
+    //   .rd_A1_RF (rd_A1_RF ),
+    //   .rd_A2_RF (rd_A2_RF ),
       .ImmExtD (ImmExtD ),
       .Rs1D (Rs1D ),
       .Rs2D (Rs2D ),
@@ -136,6 +136,36 @@ hazardTOP #(.word_width (word_width)) thisHazardUnit
       .FlushE (FlushE ),
       .StallF  ( StallF)
     );
+
+regFile #(.address_width (5)) thisRegFile 
+    (
+      .clk (clk ),
+      .we3 (RegWriteW),
+      .rd_addr1 (Rs1D ),
+      .rd_addr2 (Rs2D ),
+      .wr_addr3 (RdW ),
+      .wr_data3 (ResultW ),
+      .rd_data1 (RD1),
+      .rd_data2 (RD2)
+    );
+
+memory thisDataMemory
+    (
+        .clk(clk),
+        .we(MemWriteM),
+        .addr(ALUResultM),
+        .wr_data(WriteDataM),
+        .rd_data(ReadDataM)
+    );
+
+memory thisInstructionMemory
+    (
+        .clk(clk),
+        .we(0),
+        .addr(PCF),
+        .rd_data(instrF)
+    );
+  
   
      
   
