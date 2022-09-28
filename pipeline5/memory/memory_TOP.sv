@@ -4,6 +4,7 @@ module memoryTOP #(
     parameter
     word_width = 32
 ) (
+    input logic clk,
     input logic RegWriteE,
     input logic [1:0] ResultSrcE,
     input logic MemWriteE,
