@@ -12,7 +12,7 @@ module regFile #(
     
     logic [31:0] regFileData [31:0]; 
 
-    always_ff @(posedge clk)
+    always_ff @(negedge clk)
         if (we3)
             regFileData[wr_addr3] <= wr_data3;
     
