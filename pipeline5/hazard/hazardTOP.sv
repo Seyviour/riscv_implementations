@@ -1,0 +1,53 @@
+//HARRIS AND HARRIS 
+module hazardTOP #(
+    parameter
+    word_width = 32
+) (
+    input logic RegWriteW, 
+    input logic RegWriteM,
+    input logic [4:0] Rs1E, Rs2E, RdE,
+    input logic [4:0] Rs1D, Rs2D, 
+    input logic [4:0] RdW,
+    input logic [4:0] RdM,
+    input logic [1:0] ResultSrcE,
+    input logic PCSrcE,
+
+    output logic [1:0] forwardAE,
+    output logic [1:0] forwardBE,
+    output logic StallD,
+    output logic FlushD,
+    output logic FlushE,
+    output logic StallF
+
+);
+logic lwStall;
+
+always_comb
+    if (RegWriteM & (Rs1E == RdM) & (Rs1E!=0))
+        forwardAE = 2'b10;
+    else if (RegWriteW & (Rs1E == RdW) & (Rs1E != 0))
+        forwardAE = 2'b01;
+    else
+        forwardAE = 2'b00;
+
+always_comb
+    if (RegWriteM & (Rs2E == RdM) & (Rs2E!=0))
+        forwardBE = 2'b10;
+    else if (RegWriteW & (Rs2E == RdW) & (Rs2E != 0))
+        forwardBE = 2'b01;
+    else
+        forwardBE = 2'b00;
+
+always_comb begin
+    lwStall = ResultSrcE[0] & ((Rs1D == RdE) | (Rs2D == RdE));
+    StallF = lwStall;
+    StallD = lwStall;
+end
+
+always_comb begin
+    FlushD = PCSrcE;
+    FlushE = lwStall | PCSrcE;
+end
+    
+    
+endmodule
