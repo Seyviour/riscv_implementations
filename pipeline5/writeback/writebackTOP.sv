@@ -13,7 +13,6 @@ module writebackTOP #(
 
     output logic [word_width-1:0] ResultW, 
     output logic RegWriteW,
-    output logic [1:0] ResultSrcW,
     output logic [4:0] RdW
 
 );
@@ -21,6 +20,7 @@ module writebackTOP #(
 logic [word_width-1:0] ALUResultW;
 logic [word_width-1:0] ReadDataW;
 logic [word_width-1:0] PCPlus4W;
+logic [1:0] ResultSrcW;
 
 
 writeback_state 
