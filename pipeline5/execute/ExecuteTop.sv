@@ -1,7 +1,7 @@
-`include "/home/saviour/study/riscv/pipeline5/execute/ExecuteState.sv"
-`include "/home/saviour/study/riscv/pipeline5/execute/Resolve.sv"
-`include "/home/saviour/study/riscv/pipeline5/execute/ALU.sv"
-`include "/home/saviour/study/riscv/pipeline5/generic/adder.sv"
+// `include "/home/saviour/study/riscv/pipeline5/execute/ExecuteState.sv"
+// `include "/home/saviour/study/riscv/pipeline5/execute/Resolve.sv"
+// `include "/home/saviour/study/riscv/pipeline5/execute/ALU.sv"
+// `include "/home/saviour/study/riscv/pipeline5/generic/adder.sv"
 
 
 module ExecuteTop #(
@@ -28,21 +28,24 @@ module ExecuteTop #(
 
     output logic RegWriteE,
     output logic [1:0] ResultSrcE,
-    output logic [1:0] MemWriteE, 
-    output logic JumpE,
-    output logic BranchE, 
-    output logic [2:0] ALUControlE,
-    output logic [4: 0] Rs1E, Rs2E, RdE,
-    output logic [word_width-1: 0] PCE,
-
+    output logic [1:0] MemWriteE,  
+    output logic [4: 0] RdE,
+    output logic PCSrcE, 
     output logic [word_width-1: 0] PCTargetE,
     output logic [word_width-1: 0] PCPlus4E,
     output logic [word_width-1: 0] ALUResultE,
-    output logic zeroE
+    output logic [word_width-1: 0] WriteDataE
 
 );
 
+logic [word_width-1:0] PCE; 
+logic [4: 0] Rs1E, Rs2E;
 logic [word_width-1: 0] RD1E, RD2E, ImmExtE;
+logic [2:0] ALUControlE;
+logic JumpE;
+logic BranchE;
+logic zeroE;
+
 logic ALUSrcE;
 
 
@@ -118,5 +121,7 @@ adder #(.word_width(32)) thisPCAdder
         .C(PCTargetE)
     );
 
+always_comb
+    PCSrcE = ((BranchE &  zeroE) | JumpE); 
 
 endmodule
