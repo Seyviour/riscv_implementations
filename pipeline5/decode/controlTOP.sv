@@ -1,12 +1,13 @@
-`default_nettype none
-`include "/home/saviour/study/riscv/pipeline5/decode/genDecode.sv"
-`include "/home/saviour/study/riscv/pipeline5/decode/ALUDecoder.sv"
+// `default_nettype none
+// `include "/home/saviour/study/riscv/pipeline5/decode/genDecode.sv"
+// `include "/home/saviour/study/riscv/pipeline5/decode/ALUDecoder.sv"
 
 
 module controlTOP #(
     parameter
     word_width = 32
 ) (
+    
     input logic [6:0] op,
     input logic [14:12] funct3,
     input logic funct7_5,

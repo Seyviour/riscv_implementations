@@ -24,7 +24,7 @@ progCounter #(.reset_state(0), .counter_width(counter_width) ) thisProgCounter(
     .load(PCSrcE),
     .load_val(PCTargetE),
     .enable(stallF),
-    .state(PCF),
+    .counter_state(PCF),
     .next_state(PCPlus4F)
     );
 

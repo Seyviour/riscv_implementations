@@ -1,29 +1,43 @@
 module RV32PipelinedTOP #(
-    parameter word_width = 32
+    parameter
+    data_file = "/home/saviour/study/riscv/test/test_instructions.txt",
+    word_width = 32
 ) (
-    input logic clk,
-    output logic [word_width-1:0] ResultW,
-    output logic [4:0] RdW,
+    input logic clk, reset,
+    output logic [word_width-1:0] WriteDataM,
+    output logic [word_width-1:0] ALUResultM,
+    output logic MemWrite
 );
 
-
+localparam r_address_width = 5; 
 
 //FetchTOP;
+
+logic StallF; 
+logic [word_width-1: 0] PCPlus4F;
+logic [word_width-1: 0] PCTargetE;
 
 FetchTop #(.word_width(word_width)) thisFetchStage
     (
         .clk(clk),
+        .reset(reset),
         .stallF_N(StallF),
         .PCSrcE(PCSrcE),
         .PCTargetE(PCTargetE),
-        .instrF(instrF),
         .PCF(PCF),
         .PCPlus4F(PCPlus4F)
     );
 
+logic [word_width-1: 0] instrF, PCF, ImmExtD, PCPlus4D;
+logic [r_address_width-1: 0] Rs1D, Rs2D, RdD;
+logic [1:0] ResultSrcD;
+logic [2:0] ALUControlD;
+logic [word_width-1:0] PCD;
+
 decodeTOP #(.word_width (word_width)) thisDecodeStage 
     (
       .clk (clk ),
+      .reset(reset),
       .instrF (instrF ),
       .PCF (PCF ),
       .PCPlus4F (PCPlus4F ),
@@ -37,7 +51,7 @@ decodeTOP #(.word_width (word_width)) thisDecodeStage
       .ResultSrcD (ResultSrcD ),
       .MemWriteD (MemWriteD ),
       .StallD(StallD),
-      .FlushD(FlushD),
+      .FlushD((FlushD)),
       .JumpD (JumpD ),
       .BranchD (BranchD ),
       .ALUControlD (ALUControlD ),
@@ -47,11 +61,18 @@ decodeTOP #(.word_width (word_width)) thisDecodeStage
     );
   
   
+logic MemWriteD;
+logic [1:0] forwardAE, forwardBE;
+logic [1:0] ResultSrcE; 
+logic [word_width-1:0] ResultW;
 
+logic [r_address_width-1:0] RdE, Rs1E, Rs2E; 
+logic [word_width-1:0] PCPlus4DE, ALUResultE, WriteDataE; 
 ExecuteTop #(.word_width (word_width)) thisExecuteStage
     (
       .clk (clk ),
-      .FlushE (FlushE ),
+      .reset(reset),
+      .FlushE ((FlushE) ),
       .RegWriteD (RegWriteD ),
       .ResultSrcD (ResultSrcD ),
       .MemWriteD (MemWriteD ),
@@ -84,9 +105,18 @@ ExecuteTop #(.word_width (word_width)) thisExecuteStage
       .WriteDataE (WriteDataE)
     );
 
-memoryTOP #(.word_width (word_width)) thisMemoryStage 
+    
+logic [word_width-1:0] PCPlus4E;
+logic [1:0] ResultSrcM;
+logic [r_address_width-1:0] RdM;
+logic [word_width-1:0] PCPlus4M;
+logic [word_width-1:0] ReadDataM;
+
+
+memoryTOP #(.word_width (32)) thisMemoryStage 
     (
       .clk(clk),
+      .reset(reset),
       .RegWriteE (RegWriteE ),
       .ResultSrcE (ResultSrcE ),
       .MemWriteE (MemWriteE ),
@@ -103,8 +133,13 @@ memoryTOP #(.word_width (word_width)) thisMemoryStage
       .PCPlus4M  ( PCPlus4M)
     );
 
-writebackTOP #(.word_width (word_width)) thisWritebackStage 
+logic RegWriteW;
+logic [r_address_width-1:0] RdW;
+
+writebackTOP #(.word_width (32)) thisWritebackStage 
     (
+      .clk(clk),
+      .reset(reset),
       .RegWriteM (RegWriteM),
       .ResultSrcM (ResultSrcM),
       .ALUResultM (ALUResultM),
@@ -137,6 +172,7 @@ hazardTOP #(.word_width (word_width)) thisHazardUnit
       .StallF  ( StallF)
     );
 
+logic [word_width-1: 0] rd_data1, rd_data2, RD1, RD2; 
 regFile #(.address_width (5)) thisRegFile 
     (
       .clk (clk ),
@@ -149,7 +185,17 @@ regFile #(.address_width (5)) thisRegFile
       .rd_data2 (RD2)
     );
 
-memory thisDataMemory
+  memory #(.data_file(data_file)) thisInstructionMemory
+  (
+      .clk(clk),
+      .we(1'b0),
+      .addr(PCF),
+      .rd_data(instrF),
+      .wr_data(0)
+  );
+
+  
+memory #(.data_file("")) thisDataMemory
     (
         .clk(clk),
         .we(MemWriteM),
@@ -158,14 +204,7 @@ memory thisDataMemory
         .rd_data(ReadDataM)
     );
 
-memory thisInstructionMemory
-    (
-        .clk(clk),
-        .we(0),
-        .addr(PCF),
-        .rd_data(instrF)
-    );
-  
+
   
      
   

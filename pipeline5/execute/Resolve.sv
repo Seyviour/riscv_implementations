@@ -1,15 +1,16 @@
-`include "/home/saviour/study/riscv/pipeline5/generic/mux_3_1.sv"
+// `include "/home/saviour/study/riscv/pipeline5/generic/mux_3_1.sv"
 module Resolve #(
     parameter word_width = 32
 ) (
-    input [word_width-1: 0] RD1E, RD2E,
-    input [word_width-1: 0] ImmExtE,
-    input [word_width-1: 0] ALUResultM,
-    input forwardAE, forwardBE, ALUSrcE,
-    input [word_width-1: 0] ResultW,
+    input logic [word_width-1: 0] RD1E, RD2E,
+    input logic [word_width-1: 0] ImmExtE,
+    input logic [word_width-1: 0] ALUResultM,
+    input logic [1:0] forwardAE, forwardBE,
+    input logic ALUSrcE,
+    input logic [word_width-1: 0] ResultW,
 
-    output [word_width-1: 0] WriteDataE,
-    output [word_width-1: 0] SrcAE, SrcBE
+    output logic [word_width-1: 0] WriteDataE,
+    output logic [word_width-1: 0] SrcAE, SrcBE
 );
 
 

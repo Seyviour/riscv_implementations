@@ -1,9 +1,9 @@
 module mux_3_1 #(
     parameter word_width = 32
 ) (
-    input [1:0] sel, 
-    input [word_width-1: 0] in00, in01, in10,
-    output [word_width-1: 0] out
+    input logic [1:0] sel, 
+    input logic [word_width-1: 0] in00, in01, in10,
+    output logic [word_width-1: 0] out
 );
     
     always_comb

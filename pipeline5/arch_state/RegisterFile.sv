@@ -1,5 +1,6 @@
 
 module regFile #(
+    parameter
     word_size = 32,
     address_width = $clog2(word_size)
 ) (
@@ -16,8 +17,8 @@ module regFile #(
         if (we3)
             regFileData[wr_addr3] <= wr_data3;
     
-    assign rd_data1 = (rd_addr1 != 0) ? regFileData[rd_data1]: 0; 
-    assign rd_data2 = (rd_addr2 != 0) ? regFileData[rd_data2]: 0; 
+    assign rd_data1 = (rd_addr1 != 0) ? (regFileData[rd_addr1]): 0; 
+    assign rd_data2 = (rd_addr2 != 0) ? (regFileData[rd_addr2]): 0; 
 endmodule
 
 //HARRIS AND HARRIS

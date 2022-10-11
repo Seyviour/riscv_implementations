@@ -9,12 +9,12 @@ module ALU #(
     output logic zero
 );
 
-    logic signed [word_width-1: 0] SrcA_S, SrcB_s;
-    logic unsigned [word_width-1: 0] SrcA_U, SrcB_U;
+    logic signed [word_width-1: 0] SrcA_S, SrcB_S;
+    logic signed [word_width-1: 0] SrcA_U, SrcB_U;
 
     always_comb begin
         SrcA_S = SrcA;
-        SrcB_s = SrcB; 
+        SrcB_S = SrcB; 
         SrcA_U = SrcA;
         SrcB_U = SrcB; 
     end
@@ -25,9 +25,9 @@ module ALU #(
 
             3'b000: Result = SrcA_U + SrcB_U;
             3'b001: Result = SrcA_U - SrcB_U;
-            3'b010: Result = (SrcA_U > SrcB_U)? 1: 0; 
-            3'b110: Result = SrcA_U | SrcB_U;
-            3'b111: Result = SrcA_U & SrcB_U;
+            3'b101: Result = (SrcA_U < SrcB_U)? 1: 0; 
+            3'b011: Result = SrcA_U | SrcB_U;
+            3'b010: Result = SrcA_U & SrcB_U;
             default: Result = SrcA; 
     endcase
 

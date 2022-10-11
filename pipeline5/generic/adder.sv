@@ -1,5 +1,6 @@
 module adder #(
-    word_size= 16
+    parameter
+    word_size = 16
 ) (
     input logic [word_size-1: 0] A, B,
     output logic [word_size-1: 0] C

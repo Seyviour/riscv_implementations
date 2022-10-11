@@ -8,10 +8,11 @@ module ExecuteTop #(
     parameter
     word_width = 32
 ) (
-    input logic clk, FlushE,
+    input logic clk, reset,  
+    input logic FlushE,
     input logic RegWriteD,
     input logic [1:0] ResultSrcD,
-    input logic [1:0] MemWriteD, 
+    input logic  MemWriteD, 
     input logic JumpD,
     input logic BranchD, 
     input logic [2:0] ALUControlD,
@@ -21,25 +22,25 @@ module ExecuteTop #(
     input logic [word_width-1: 0] PCD, PCPlus4D,
 
 
-    input [word_width-1: 0] ALUResultM,
-    input forwardAE, forwardBE,
-    input [word_width-1: 0] ResultW,
+    input logic [word_width-1: 0] ALUResultM,
+    input logic [1:0] forwardAE, forwardBE,
+    input logic [word_width-1: 0] ResultW,
 
 
     output logic RegWriteE,
     output logic [1:0] ResultSrcE,
-    output logic [1:0] MemWriteE,  
+    output logic  MemWriteE,  
     output logic [4: 0] RdE,
     output logic PCSrcE, 
     output logic [word_width-1: 0] PCTargetE,
     output logic [word_width-1: 0] PCPlus4E,
     output logic [word_width-1: 0] ALUResultE,
-    output logic [word_width-1: 0] WriteDataE
-
+    output logic [word_width-1: 0] WriteDataE,
+    output logic [4: 0] Rs1E, Rs2E
 );
 
 logic [word_width-1:0] PCE; 
-logic [4: 0] Rs1E, Rs2E;
+
 logic [word_width-1: 0] RD1E, RD2E, ImmExtE;
 logic [2:0] ALUControlE;
 logic JumpE;
@@ -88,8 +89,8 @@ ExecuteState #(.word_width(32)) thisExecuteState
         .PCPlus4E(PCPlus4E)
     );
 
-logic [word_width-1: 0] SrcAE, SrcBE, WriteDataE; 
 
+logic [word_width-1: 0] SrcAE, SrcBE;
 Resolve #(.word_width(32)) thisResolver
     (
         .RD1E(RD1E),
@@ -114,7 +115,7 @@ ALU #(.word_width(32)) thisALU
         .zero(zeroE)
     );
 
-adder #(.word_width(32)) thisPCAdder
+adder #(.word_size(32)) thisPCAdder
     (
         .A(PCE),
         .B(ImmExtE),

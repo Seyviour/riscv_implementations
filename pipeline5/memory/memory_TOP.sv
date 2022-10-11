@@ -1,10 +1,10 @@
-`include "/home/saviour/study/riscv/pipeline5/memory/memory_state.sv"
+// `include "/home/saviour/study/riscv/pipeline5/memory/memory_state.sv"
 
 module memoryTOP #(
     parameter
     word_width = 32
 ) (
-    input logic clk,
+    input logic clk, reset, 
     input logic RegWriteE,
     input logic [1:0] ResultSrcE,
     input logic MemWriteE,
@@ -29,6 +29,8 @@ memoryState
       word_width )
 )
 thisMemoryState (
+  .clk(clk),
+  .reset(reset),
   .RegWriteE (RegWriteE ),
   .ResultSrcE (ResultSrcE ),
   .MemWriteE (MemWriteE ),

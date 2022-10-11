@@ -4,6 +4,7 @@ module writebackTOP #(
     parameter
     word_width = 32
 ) (
+    input logic clk, reset, 
     input logic RegWriteM ,
     input logic [1:0] ResultSrcM,
     input logic [word_width-1:0] ALUResultM,
@@ -27,7 +28,9 @@ writeback_state
 #(
   .word_width (word_width )
 )
-writeback_state_dut (
+writeback_state (
+  .clk(clk),
+  .reset(reset),
   .RegWriteM (RegWriteM ),
   .ResultSrcM (ResultSrcM ),
   .ALUResultM (ALUResultM ),
@@ -44,6 +47,7 @@ writeback_state_dut (
 
 mux_3_1 #(.word_width(word_width)) ResultMux
     (
+        .sel(ResultSrcW),
         .in00(ALUResultW),
         .in01(ReadDataW),
         .in10(PCPlus4W),

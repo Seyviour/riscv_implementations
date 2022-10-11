@@ -1,16 +1,16 @@
-`default_nettype none
+// `default_nettype none
 
-`include "/home/saviour/study/riscv/pipeline5/decode/decodeState.sv"
-`include "/home/saviour/study/riscv/pipeline5/decode/extend.sv"
-`include "/home/saviour/study/riscv/pipeline5/decode/controlTOP.sv"
-`include "/home/saviour/study/riscv/pipeline5/decode/split.sv"
+// `include "/home/saviour/study/riscv/pipeline5/decode/decodeState.sv"
+// `include "/home/saviour/study/riscv/pipeline5/decode/extend.sv"
+// `include "/home/saviour/study/riscv/pipeline5/decode/controlTOP.sv"
+// `include "/home/saviour/study/riscv/pipeline5/decode/split.sv"
 
 
 module decodeTOP #(
     parameter
     word_width = 32
 ) (
-    input logic clk, 
+    input logic clk, reset,
     input logic [word_width-1: 0] instrF,
     input logic [word_width-1: 0] PCF,
     input logic  [word_width-1: 0] PCPlus4F,
@@ -44,7 +44,8 @@ decodeState #(.word_width(32)) thisDecodeState
         .instrF(instrF),
         .PCF(PCF),
         .PCPlus4F(PCPlus4F),
-        .reset(FlushD),
+        .reset(reset),
+        .FlushD(FlushD),
         .enable(~StallD),
 
         //output
@@ -75,9 +76,12 @@ Split this_split
     );
 
 
-logic [6:0]   op = i_6_0;
-logic [14:12] funct3 = i_14_12;
-logic funct7_5 = i_30;
+logic [6:0] op;
+assign op = i_6_0;
+logic [14:12] funct3;
+assign funct3 = i_14_12;
+logic funct7_5;
+assign funct7_5 = i_30;
 
 assign rd_A1_RF = i_19_15;
 assign rd_A2_RF = i_24_20;
